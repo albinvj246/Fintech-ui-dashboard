@@ -58,4 +58,4 @@ The dashboard is meticulously engineered to be **fully responsive**. Whether you
 - `/public`: Static assets and icons.
 
 ---
-Built with ❤️ for Indel Money Financial Operations.
+
