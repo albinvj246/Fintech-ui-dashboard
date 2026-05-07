@@ -12,18 +12,24 @@ import GradedAssetsCard from "./components/GradedAssetsCard";
 
 export default function DashboardPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50">
       {/* Sidebar */}
-      <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
+      <Sidebar 
+        collapsed={sidebarCollapsed} 
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} 
+        mobileOpen={mobileSidebarOpen}
+        onMobileClose={() => setMobileSidebarOpen(false)}
+      />
 
       {/* Main Area */}
       <div
-        className="flex-1 flex flex-col h-screen overflow-hidden transition-all duration-300"
-        style={{ marginLeft: sidebarCollapsed ? 68 : 220 }}
+        className="flex-1 flex flex-col h-screen overflow-hidden transition-all duration-300 lg:ml-[var(--sidebar-offset)]"
+        style={{ '--sidebar-offset': sidebarCollapsed ? '68px' : '220px' }}
       >
-        <TopBar />
+        <TopBar onToggleMobileSidebar={() => setMobileSidebarOpen(true)} />
 
         <main className="flex-1 overflow-y-auto p-4 pr-[18px]">
           <div className="w-full space-y-4">
@@ -48,11 +54,11 @@ export default function DashboardPage() {
               </div>
               
               {/* ═══ RIGHT SIDEBAR — Grouped sections ═══ */}
-              <div className="xl:col-span-1 space-y-5">
+              <div className="xl:col-span-1 space-y-3">
                 {/* Group 1: Live Data & Market Info */}
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center gap-2 px-1">
-                    <span className="text-[12px] font-semibold text-slate-400 tracking-wide">Market Data</span>
+                    <span className="text-[12px] font-semibold text-slate-400 tracking-wide uppercase">Market Data</span>
                     <div className="flex-1 h-px bg-slate-200" />
                   </div>
                   <GoldRateCard />

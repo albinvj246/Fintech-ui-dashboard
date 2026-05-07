@@ -108,41 +108,61 @@ function EnquiryIcon() {
   );
 }
 
-export default function Sidebar({ collapsed, onToggle }) {
+export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }) {
   return (
-    <aside className={`fixed top-0 left-0 h-screen bg-[#0F172A] text-white flex flex-col z-50 transition-all duration-300 ${collapsed ? 'w-[68px]' : 'w-[220px]'}`}>
-      <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between px-4'} h-[60px] border-b border-white/10 flex-shrink-0`}>
-        {!collapsed && (
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center text-white font-extrabold text-sm flex-shrink-0">₹</div>
-            <span className="text-[15px] font-bold tracking-wider whitespace-nowrap">INDEL <span className="text-teal-400">MONEY</span></span>
-          </div>
-        )}
-        <button onClick={onToggle} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 cursor-pointer group ${!collapsed ? 'bg-transparent' : 'bg-emerald-500/10'}`}>
-          <div className={`flex flex-row items-center justify-center gap-[3px] h-[14px] transition-all duration-500 ${collapsed ? '' : 'rotate-180 scale-110 ml-auto'}`}>
-            <span className="block w-[2px] h-full bg-emerald-400 rounded-full" />
-            <span className="block w-[2px] h-3/4 bg-emerald-400/70 rounded-full" />
-            <span className="block w-[2px] h-1/2 bg-emerald-400/40 rounded-full" />
-          </div>
-        </button>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      {mobileOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] lg:hidden transition-opacity duration-300"
+          onClick={onMobileClose}
+        />
+      )}
 
-      <nav className="flex-1 py-4 px-2 space-y-0.5 overflow-y-auto">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.label}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all duration-200 cursor-pointer ${
-                item.active ? 'bg-white/15 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <div className={item.active ? 'text-teal-400' : ''}><Icon /></div>
-              {!collapsed && <span>{item.label}</span>}
-            </button>
-          );
-        })}
-      </nav>
-    </aside>
+      <aside className={`fixed top-0 left-0 h-screen bg-[#0F172A] text-white flex flex-col z-[70] transition-all duration-300 
+        ${mobileOpen ? 'translate-x-0 w-[240px]' : '-translate-x-full lg:translate-x-0'} 
+        ${collapsed ? 'lg:w-[68px]' : 'lg:w-[220px]'}`}>
+        
+        <div className={`flex items-center ${collapsed ? 'lg:justify-center' : 'justify-between px-4'} h-[60px] border-b border-white/10 flex-shrink-0`}>
+          {(!collapsed || mobileOpen) && (
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center text-white font-extrabold text-sm flex-shrink-0">₹</div>
+              <span className="text-[15px] font-bold tracking-wider whitespace-nowrap">INDEL <span className="text-teal-400">MONEY</span></span>
+            </div>
+          )}
+          
+          {/* Desktop Toggle */}
+          <button onClick={onToggle} className={`hidden lg:flex w-10 h-10 rounded-full items-center justify-center transition-all duration-500 cursor-pointer group ${!collapsed ? 'bg-transparent' : 'bg-emerald-500/10'}`}>
+            <div className={`flex flex-row items-center justify-center gap-[3px] h-[14px] transition-all duration-500 ${collapsed ? '' : 'rotate-180 scale-110 ml-auto'}`}>
+              <span className="block w-[2px] h-full bg-emerald-400 rounded-full" />
+              <span className="block w-[2px] h-3/4 bg-emerald-400/70 rounded-full" />
+              <span className="block w-[2px] h-1/2 bg-emerald-400/40 rounded-full" />
+            </div>
+          </button>
+
+          {/* Mobile Close Button */}
+          <button onClick={onMobileClose} className="lg:hidden w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <nav className="flex-1 py-4 px-2 space-y-0.5 overflow-y-auto">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.label}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all duration-200 cursor-pointer ${
+                  item.active ? 'bg-white/15 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <div className={item.active ? 'text-teal-400' : ''}><Icon /></div>
+                {(!collapsed || mobileOpen) && <span>{item.label}</span>}
+              </button>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }
