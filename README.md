@@ -53,7 +53,7 @@ To run this project, the following key libraries are utilized:
 ### Installation
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/albinvj246/Fintech-ui-dashboard.git
    ```
 2. **Install all dependencies**:
    ```bash
